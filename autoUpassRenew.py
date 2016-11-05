@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import NoSuchElementException
+
 import time
 import sys
 import getpass
@@ -51,11 +53,14 @@ logoutBtn.click()
 
 time.sleep(1)
 
-dialog = driver.find_element_by_class_name("ui-dialog")
+try:
+	dialog = driver.find_element_by_class_name("ui-dialog")
 
-if dialog.is_displayed():
-	logoutBtn = dialog.find_element_by_id("LogOutLink")
-	logoutBtn.click()
+	if dialog.is_displayed():
+		logoutBtn = dialog.find_element_by_id("LogOutLink")
+		logoutBtn.click()
+except NoSuchElementException:
+	pass
 
 
 time.sleep(3) # Let the user actually see something!

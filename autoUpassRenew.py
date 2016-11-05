@@ -1,15 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import time
-import getpass
+import sys
 
-username = input("Please enter username: ")
-password = getpass.getpass()
-confirmPw = getpass.getpass()
-
-if password != confirmPw:
-	print("passwords do not match!!")
+if len(sys.argv) < 2:
+	print("autoUpassRenew.py <username> <password>")
 	exit()
+else:
+	username = sys.argv[1]
+	password = sys.argv[2]
 
 driver = webdriver.Chrome(executable_path=r'C:\chromedriver_win32\chromedriver.exe')
 driver.get("https://upassbc.translink.ca/")
@@ -28,6 +27,10 @@ username_f.send_keys(username)
 password_f.send_keys(password)
 
 password_f.submit();
+
+if "Login Failed" in driver.page_source:
+	driver.quit()
+	raise Exception("Login Failed")
 
 #### Back to Translink ####
 chkboxes = driver.find_elements_by_css_selector("form#form-request table [type=checkbox]")

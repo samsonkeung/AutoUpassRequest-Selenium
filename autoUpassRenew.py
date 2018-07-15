@@ -1,4 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 
@@ -13,7 +16,7 @@ else:
 	username = sys.argv[1]
 	password = getpass.getpass()
 
-driver = webdriver.Chrome(executable_path=r'C:\chromedriver_win32\chromedriver.exe')
+driver = webdriver.Chrome(executable_path=r'.\chromedriver.exe')
 driver.get("https://upassbc.translink.ca/")
 
 schoolsDD = Select(driver.find_element_by_id("PsiId"))
@@ -23,7 +26,7 @@ goBtn = driver.find_element_by_id("goButton")
 goBtn.click();
 
 #### Login to UBC CWL ####
-username_f = driver.find_element_by_id("j_username")
+username_f = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "j_username")));
 password_f = driver.find_element_by_id("password")
 
 username_f.send_keys(username)
